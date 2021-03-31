@@ -11,6 +11,8 @@ import java.util.List;
 public class AddressBookDBService {
 
     private static AddressBookDBService addressDBService;
+    private PreparedStatement addressDataStatement;
+
 
     public AddressBookDBService() {
 
@@ -76,5 +78,49 @@ public class AddressBookDBService {
         return addressDBList;
     }
 
+    public int updateEmployeeData(String name, String address) {
+        return this.updateContactDataUsingPreparedStatement(name, address);
+    }
+
+    private int updateContactDataUsingPreparedStatement(String firstName, String address) {
+        try (Connection connection = addressDBService.getConnection()) {
+            String sql = "update addressbooktable set address=? where firstName=?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, address);
+            preparedStatement.setString(2, firstName);
+            return preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 1;
+    }
+
+    public List<AddressBookData> getDataByName(String name) {
+        List<AddressBookData> contactList = null;
+        if (this.addressDataStatement == null)
+            this.prepareStatementForContactData();
+        try {
+            addressDataStatement.setString(1, name);
+            ResultSet resultSet = addressDataStatement.executeQuery();
+            contactList = this.getAddressList(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return contactList;
+    }
+
+    private void prepareStatementForContactData() {
+        try {
+            Connection connection = addressDBService.getConnection();
+            String sql = "SELECT * from  addressbooktable WHERE firstName=?; ";
+            addressDataStatement = connection.prepareStatement(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
+
+
+
+
 

@@ -1,17 +1,19 @@
 package com.bridgelabs.com;
 
+import java.util.Objects;
+
 public class AddressBookData {
-    private int id;
-    private String firstName;
-    private String lastName;
-    private String address;
-    private String city;
-    private String state;
-    private int zip;
-    private String phoneNumber;
-    private String email;
-    private String type;
-    private String addressbookname;
+    public int id;
+    public String firstName;
+    public String lastName;
+    public String address;
+    public String city;
+    public String state;
+    public int zip;
+    public String phoneNumber;
+    public String email;
+    public String type;
+    public String addressbookname;
 
     public AddressBookData(int id, String firstName, String lastName,
                            String address, String city, String state,
@@ -27,6 +29,23 @@ public class AddressBookData {
         this.email = email;
         this.type = type;
         this.addressbookname = addressbookname;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AddressBookData)) return false;
+        AddressBookData that = (AddressBookData) o;
+        return id == that.id && zip == that.zip && firstName.equals(that.firstName) &&
+                lastName.equals(that.lastName) &&
+                address.equals(that.address) && city.equals(that.city) &&
+                state.equals(that.state) && phoneNumber.equals(that.phoneNumber) &&
+                email.equals(that.email) && type.equals(that.type) && addressbookname.equals(that.addressbookname);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, address, city, state, zip, phoneNumber, email, type, addressbookname);
     }
 
     @Override

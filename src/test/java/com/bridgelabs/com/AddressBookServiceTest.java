@@ -21,5 +21,16 @@ public class AddressBookServiceTest {
         System.out.println(addressList);
         Assertions.assertEquals(5, addressList.size());
     }
+
+    @Test
+    public void givenNewAddressForPerson_WhenUpdatedUsing_ShouldSyncWithDB() {
+        AddressBookService addressBookService = new AddressBookService();
+        addressBookService.readData();
+        addressBookService.updateDetails("Rachana", "Belendur");
+        System.out.println(addressBookService.contactList.get(2));
+        boolean result = addressBookService.checkContactInSyncWithDB("Rachana");
+        Assertions.assertTrue(result);
+    }
+
 }
 
