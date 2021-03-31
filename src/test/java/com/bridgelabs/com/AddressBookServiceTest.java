@@ -45,5 +45,12 @@ public class AddressBookServiceTest {
         Assertions.assertEquals(countbyState, 3);
     }
 
+    @Test
+    public void givenNewContact_WhenAdded_ShouldSyncWithDB() {
+        addressBookService.addNewContactToDatabase("Mouni", "1", "Vijayvada", "Hyderabad", "Andra", 34567,
+                "09876678901", "mouni@gmail.com", " Profession", "UST");
+        boolean result = addressBookService.checkContactInSyncWithDB("Mouni");
+        Assertions.assertTrue(result);
+    }
 }
 

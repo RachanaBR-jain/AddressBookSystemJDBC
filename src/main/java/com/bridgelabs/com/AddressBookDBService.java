@@ -2,10 +2,7 @@ package com.bridgelabs.com;
 
 import java.sql.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AddressBookDBService {
 
@@ -144,7 +141,40 @@ public class AddressBookDBService {
     }
 
 
+    public AddressBookData addData(String firstName, String lastName, String address, String city, String state,
+                                   int zip, String phoneNumber, String email, String type, String addressBookName) {
+        int addressId = -1;
+        Connection connection = null;
+        AddressBookData addressData = null;
+        try {
+            connection = this.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try (Statement statement = connection.createStatement()) {
+            String sql = String.format(
+                    "INSERT INTO addressbooktable (firstName,lastName,address,city,state,zip,phoneNumber,email,type,addressbookname) "
+                            + "VALUES ('%s', %s, '%s','%s','%s',%s,%s,'%s','%s','%s')",
+                    firstName, lastName, address, city, state, zip, phoneNumber, email, type, addressBookName);
+            int rowAffected = statement.executeUpdate(sql, statement.RETURN_GENERATED_KEYS);
+            if (rowAffected == 1) {
+                ResultSet result = statement.getGeneratedKeys();
+                if (result.next())
+                    addressId = result.getInt(1);
+
+                addressData = new AddressBookData(addressId, firstName, lastName, address, city, state, zip, phoneNumber, email, type, addressBookName);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return addressData;
+    }
+
 }
+
+
 
 
 

@@ -47,4 +47,11 @@ public class AddressBookService {
     }
 
 
+    public void addNewContactToDatabase(String firstName, String lastName, String address, String city, String state,
+                                        int zip, String phoneNumber, String email, String type, String addressbookname) {
+        contactList.add(addressBookDBService.addData(firstName, lastName, address, city, state, zip, phoneNumber, email, type, addressbookname));
+    }
 }
+
+
+
