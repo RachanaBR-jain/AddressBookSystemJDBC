@@ -1,6 +1,8 @@
 package com.bridgelabs.com;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public class AddressBookService {
     public List<AddressBookData> contactList;
@@ -39,4 +41,10 @@ public class AddressBookService {
         List<AddressBookData> contactList = addressBookDBService.getDataByName(firstName);
         return contactList.get(0).equals(getContactData(firstName));
     }
+
+    public Map<String, Integer> readByCityOrState() {
+        return addressBookDBService.getDetailsByCityOrState();
+    }
+
+
 }

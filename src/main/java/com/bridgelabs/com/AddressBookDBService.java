@@ -1,12 +1,11 @@
 package com.bridgelabs.com;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AddressBookDBService {
 
@@ -118,6 +117,33 @@ public class AddressBookDBService {
             e.printStackTrace();
         }
     }
+
+    public Map<String, Integer> getDetailsByCityOrState() {
+        Map<String, Integer> map = new HashMap<>();
+        ResultSet resultSet;
+        String countOfCity = "SELECT city, count(firstName) as count from addressbooktable group by city; ";
+        String countOfState = "SELECT state, count(firstName) as count from addressbooktable group by state; ";
+        try (Connection connection = addressDBService.getConnection()) {
+            Statement statement = connection.createStatement();
+            resultSet = statement.executeQuery(countOfCity);
+            while (resultSet.next()) {
+                String city = resultSet.getString("city");
+                Integer count = resultSet.getInt("count");
+                map.put(city, count);
+            }
+            resultSet = statement.executeQuery(countOfState);
+            while (resultSet.next()) {
+                String state = resultSet.getString("state");
+                Integer count = resultSet.getInt("count");
+                map.put(state, count);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
+
+
 }
 
 
