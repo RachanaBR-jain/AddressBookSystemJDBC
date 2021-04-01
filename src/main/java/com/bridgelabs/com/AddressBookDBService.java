@@ -153,7 +153,7 @@ public class AddressBookDBService {
         }
         try (Statement statement = connection.createStatement()) {
             String sql = String.format(
-                    "INSERT INTO addressbooktable (firstName,lastName,address,city,state,zip,phoneNumber,email,type,addressbookname) "
+                    "INSERT INTO addressbooktable(firstName,lastName,address,city,state,zip,phoneNumber,email,type,addressbookname) "
                             + "VALUES ('%s', %s, '%s','%s','%s',%s,%s,'%s','%s','%s')",
                     firstName, lastName, address, city, state, zip, phoneNumber, email, type, addressBookName);
             int rowAffected = statement.executeUpdate(sql, statement.RETURN_GENERATED_KEYS);

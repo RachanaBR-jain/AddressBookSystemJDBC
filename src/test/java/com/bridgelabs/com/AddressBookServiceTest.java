@@ -1,6 +1,9 @@
 package com.bridgelabs.com;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -52,5 +55,22 @@ public class AddressBookServiceTest {
         boolean result = addressBookService.checkContactInSyncWithDB("Mouni");
         Assertions.assertTrue(result);
     }
+
+    @Test
+    public void givenMultipleAdressBook_WhenAdded_ShoulReturnCount() {
+        AddressBookData[] addressArray = {new AddressBookData(10, "Rathnaraj",
+                "99", "Kalasa", "Manglore", "Karnataka",
+                47100, "224578962", "rathnaraj@gmail.com", "Family", "Beerleke"),
+                new AddressBookData(11, "Shushan", "88", "Samsa", "Banglore",
+                        "Karnataka", 10222, "784752698", "sushuhu@gmail.com",
+                        "Friends", "Trip")};
+        Instant threadStart = Instant.now();
+        addressBookService.addAddressBooks(Arrays.asList(addressArray));
+        Instant threadEnd = Instant.now();
+        System.out.println("Duration with thread " + Duration.between(threadStart, threadEnd));
+        Assertions.assertEquals(8, addressBookService.contactList.size());
+    }
+
 }
+
 
